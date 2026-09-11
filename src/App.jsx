@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Award, Play, RotateCcw, CheckCircle2, XCircle, AlertCircle, 
-  Clock, BookOpen, Calendar, Video, Copy, Sparkles, ChevronRight, Zap, Target, Crown, Volume2, ShieldCheck, Wand2, Trophy, Flame
+  Clock, BookOpen, Calendar, Video, Copy, Sparkles, ChevronRight, Zap, Target, Crown, Volume2, ShieldCheck, Wand2, Trophy, Flame, Layers
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { soundFX } from './utils/audio';
 
+import LaPulpaMaster from './components/LaPulpaMaster';
 import StoryGenerator from './components/StoryGenerator';
-import MasterExam from './components/MasterExam';
-import VideoMasterclass from './components/VideoMasterclass';
+import BoardSimulator from './components/BoardSimulator';
 import SpeechStudio from './components/SpeechStudio';
+import VideoMasterclass from './components/VideoMasterclass';
 import RhetoricToolkit from './components/RhetoricToolkit';
 
 // ----------------------------------------------------
@@ -74,7 +75,7 @@ const OBAMA_PLAN = [
 ];
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('generator');
+  const [activeTab, setActiveTab] = useState('pulpa');
   const [completedDays, setCompletedDays] = useState({});
   const [copiedMail, setCopiedMail] = useState(false);
 
@@ -105,8 +106,8 @@ export default function App() {
             <Crown size={26} />
           </div>
           <div className="brand-text">
-            <h1>CTO Pitch & Storytelling Coach</h1>
-            <p>Oratoria Diplomática Estilo Barack Obama & Posicionamiento C-Level ($11M+ ARS)</p>
+            <h1>CTO Oratory & Storytelling Academy</h1>
+            <p>Posicionamiento Ejecutivo C-Level ($11M+ ARS) & Método Obama</p>
           </div>
         </div>
 
@@ -116,84 +117,175 @@ export default function App() {
         </div>
       </header>
 
-      {/* NAVIGATION TABS */}
+      {/* STEPPER STEP-BY-STEP GUIDED NAVIGATION */}
+      <div className="glass-card" style={{ background: 'linear-gradient(135deg, rgba(15,23,42,0.9), rgba(30,27,75,0.95))', padding: '16px 20px', marginBottom: '24px', border: '1px solid rgba(99,102,241,0.3)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+          
+          <button
+            onClick={() => handleTabChange('pulpa')}
+            style={{
+              flex: 1,
+              minWidth: '220px',
+              padding: '12px',
+              borderRadius: '10px',
+              background: activeTab === 'pulpa' ? 'linear-gradient(135deg, #6366f1, #4f46e5)' : 'rgba(255,255,255,0.04)',
+              border: activeTab === 'pulpa' ? 'none' : '1px solid rgba(255,255,255,0.1)',
+              color: '#fff',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              transition: 'all 0.25s ease'
+            }}
+          >
+            <span style={{ fontSize: '1.2rem', fontWeight: '900', opacity: 0.8 }}>1</span>
+            <div style={{ textAlign: 'left' }}>
+              <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', opacity: 0.8, display: 'block' }}>PASO 1</span>
+              <span style={{ fontSize: '0.95rem', fontWeight: '800' }}>🧠 La Pulpa Teórica</span>
+            </div>
+          </button>
+
+          <ChevronRight size={18} style={{ color: '#64748b' }} />
+
+          <button
+            onClick={() => handleTabChange('generator')}
+            style={{
+              flex: 1,
+              minWidth: '220px',
+              padding: '12px',
+              borderRadius: '10px',
+              background: activeTab === 'generator' ? 'linear-gradient(135deg, #6366f1, #4f46e5)' : 'rgba(255,255,255,0.04)',
+              border: activeTab === 'generator' ? 'none' : '1px solid rgba(255,255,255,0.1)',
+              color: '#fff',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              transition: 'all 0.25s ease'
+            }}
+          >
+            <span style={{ fontSize: '1.2rem', fontWeight: '900', opacity: 0.8 }}>2</span>
+            <div style={{ textAlign: 'left' }}>
+              <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', opacity: 0.8, display: 'block' }}>PASO 2</span>
+              <span style={{ fontSize: '0.95rem', fontWeight: '800' }}>🪄 Generar Historias P-A-R</span>
+            </div>
+          </button>
+
+          <ChevronRight size={18} style={{ color: '#64748b' }} />
+
+          <button
+            onClick={() => handleTabChange('board')}
+            style={{
+              flex: 1,
+              minWidth: '220px',
+              padding: '12px',
+              borderRadius: '10px',
+              background: activeTab === 'board' ? 'linear-gradient(135deg, #6366f1, #4f46e5)' : 'rgba(255,255,255,0.04)',
+              border: activeTab === 'board' ? 'none' : '1px solid rgba(255,255,255,0.1)',
+              color: '#fff',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              transition: 'all 0.25s ease'
+            }}
+          >
+            <span style={{ fontSize: '1.2rem', fontWeight: '900', opacity: 0.8 }}>3</span>
+            <div style={{ textAlign: 'left' }}>
+              <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', opacity: 0.8, display: 'block' }}>PASO 3</span>
+              <span style={{ fontSize: '0.95rem', fontWeight: '800' }}>🏛️ Examen & Simulador Board</span>
+            </div>
+          </button>
+
+          <ChevronRight size={18} style={{ color: '#64748b' }} />
+
+          <button
+            onClick={() => handleTabChange('studio')}
+            style={{
+              flex: 1,
+              minWidth: '220px',
+              padding: '12px',
+              borderRadius: '10px',
+              background: activeTab === 'studio' ? 'linear-gradient(135deg, #6366f1, #4f46e5)' : 'rgba(255,255,255,0.04)',
+              border: activeTab === 'studio' ? 'none' : '1px solid rgba(255,255,255,0.1)',
+              color: '#fff',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              transition: 'all 0.25s ease'
+            }}
+          >
+            <span style={{ fontSize: '1.2rem', fontWeight: '900', opacity: 0.8 }}>4</span>
+            <div style={{ textAlign: 'left' }}>
+              <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', opacity: 0.8, display: 'block' }}>PASO 4</span>
+              <span style={{ fontSize: '0.95rem', fontWeight: '800' }}>⏱️ Teleprompter & Ritmo</span>
+            </div>
+          </button>
+
+        </div>
+      </div>
+
+      {/* SECONDARY QUICK ACCESS TABS */}
       <nav className="nav-tabs">
         <button 
-          className={`tab-btn ${activeTab === 'generator' ? 'active' : ''}`}
-          onClick={() => handleTabChange('generator')}
+          className={`tab-btn ${activeTab === 'rhetoric' ? 'active' : ''}`}
+          onClick={() => handleTabChange('rhetoric')}
         >
-          <Wand2 size={18} /> Generador de Historias C-Level
-        </button>
-
-        <button 
-          className={`tab-btn ${activeTab === 'masterExam' ? 'active' : ''}`}
-          onClick={() => handleTabChange('masterExam')}
-        >
-          <Trophy size={18} /> Examen de Maestría
+          <Sparkles size={16} /> Caja Retórica
         </button>
 
         <button 
           className={`tab-btn ${activeTab === 'masterclass' ? 'active' : ''}`}
           onClick={() => handleTabChange('masterclass')}
         >
-          <Video size={18} /> Masterclasses & Video Analysis
-        </button>
-
-        <button 
-          className={`tab-btn ${activeTab === 'studio' ? 'active' : ''}`}
-          onClick={() => handleTabChange('studio')}
-        >
-          <Clock size={18} /> Estudio de Ritmo & Teleprompter
-        </button>
-
-        <button 
-          className={`tab-btn ${activeTab === 'rhetoric' ? 'active' : ''}`}
-          onClick={() => handleTabChange('rhetoric')}
-        >
-          <Sparkles size={18} /> Caja de Herramientas Retóricas
+          <Video size={16} /> Video Masterclasses
         </button>
 
         <button 
           className={`tab-btn ${activeTab === 'obama' ? 'active' : ''}`}
           onClick={() => handleTabChange('obama')}
         >
-          <Crown size={18} /> Método Obama (14 Días)
+          <Crown size={16} /> Tracker 14 Días
         </button>
 
         <button 
           className={`tab-btn ${activeTab === 'vocab' ? 'active' : ''}`}
           onClick={() => handleTabChange('vocab')}
         >
-          <BookOpen size={18} /> Vocabulario C-Level
+          <BookOpen size={16} /> Vocabulario C-Level
         </button>
 
         <button 
           className={`tab-btn ${activeTab === 'agenda' ? 'active' : ''}`}
           onClick={() => handleTabChange('agenda')}
         >
-          <Calendar size={18} /> Agenda & Checklist Lunes 14
+          <Calendar size={16} /> Agenda Lunes 14
         </button>
       </nav>
 
       {/* MAIN CONTENT AREA */}
       <main className="content-area">
 
-        {/* TAB 1: STORY GENERATOR */}
+        {/* STEP 1: LA PULPA MASTER */}
+        {activeTab === 'pulpa' && <LaPulpaMaster />}
+
+        {/* STEP 2: STORY GENERATOR */}
         {activeTab === 'generator' && <StoryGenerator />}
 
-        {/* TAB 2: MASTER EXAM */}
-        {activeTab === 'masterExam' && <MasterExam />}
+        {/* STEP 3: BOARD SIMULATOR */}
+        {activeTab === 'board' && <BoardSimulator />}
 
-        {/* TAB 3: VIDEO MASTERCLASSES */}
-        {activeTab === 'masterclass' && <VideoMasterclass />}
-
-        {/* TAB 4: SPEECH STUDIO */}
+        {/* STEP 4: SPEECH STUDIO */}
         {activeTab === 'studio' && <SpeechStudio />}
 
-        {/* TAB 5: RHETORIC TOOLKIT */}
+        {/* SECONDARY: RHETORIC TOOLKIT */}
         {activeTab === 'rhetoric' && <RhetoricToolkit />}
 
-        {/* TAB 6: METODO BARACK OBAMA */}
+        {/* SECONDARY: VIDEO MASTERCLASSES */}
+        {activeTab === 'masterclass' && <VideoMasterclass />}
+
+        {/* SECONDARY: METODO BARACK OBAMA */}
         {activeTab === 'obama' && (
           <div>
             {/* HERO BARACK OBAMA METHOD */}
@@ -210,49 +302,6 @@ export default function App() {
               <p style={{ fontSize: '1rem', color: '#94a3b8', maxWidth: '900px' }}>
                 Para dejar de expresarte de forma acelerada, rígida o defensiva y transmitir la calma inquebrantable de un líder internacional, tenés que dominar la física del silencio, la entonación barítona descendente y la gesticulación de caja.
               </p>
-            </div>
-
-            {/* 5 PILARES DIPLOMATICOS */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', marginBottom: '28px' }}>
-              <div className="glass-card">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#34d399', fontWeight: '700', marginBottom: '10px' }}>
-                  <Volume2 size={22} />
-                  <span>1. La Pausa de 2 Segundos</span>
-                </div>
-                <p style={{ fontSize: '0.9rem', color: '#94a3b8' }}>
-                  Al recibir la pregunta, <strong>no abras la boca durante 2s</strong>. Mantené la mirada fija y asentí suavemente. Quien domina el silencio domina la sala.
-                </p>
-              </div>
-
-              <div className="glass-card">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#38bdf8', fontWeight: '700', marginBottom: '10px' }}>
-                  <ShieldCheck size={22} />
-                  <span>2. Inflexión Descendente</span>
-                </div>
-                <p style={{ fontSize: '0.9rem', color: '#94a3b8' }}>
-                  Al cerrar cada frase, <strong>baja el tono vocal (tono grave/barítono)</strong>. Nunca la subas como duda. Cierra las oraciones con autoridad categórica.
-                </p>
-              </div>
-
-              <div className="glass-card">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#fbbf24', fontWeight: '700', marginBottom: '10px' }}>
-                  <Crown size={22} />
-                  <span>3. Caja Gestual & Pirámide</span>
-                </div>
-                <p style={{ fontSize: '0.9rem', color: '#94a3b8' }}>
-                  Manos dentro de la caja ejecutiva (ombligo a pecho). Durante las pausas, junta yemas de los dedos formando la <strong>Pirámide de Confianza</strong>.
-                </p>
-              </div>
-
-              <div className="glass-card">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#c7d2fe', fontWeight: '700', marginBottom: '10px' }}>
-                  <Sparkles size={22} />
-                  <span>4. La Regla de Tres (Tricolon)</span>
-                </div>
-                <p style={{ fontSize: '0.9rem', color: '#94a3b8' }}>
-                  Estructura siempre en conjuntos de tres: <em>"Mi propuesta se apoya en 1. Eficiencia P&L, 2. Innovación IA, 3. Equipos Autónomos."</em>
-                </p>
-              </div>
             </div>
 
             {/* 14 DAY HABIT TRACKER */}
@@ -294,7 +343,7 @@ export default function App() {
           </div>
         )}
 
-        {/* TAB 7: VOCABULARIO C-LEVEL */}
+        {/* SECONDARY: VOCABULARIO C-LEVEL */}
         {activeTab === 'vocab' && (
           <div>
             <div className="glass-card" style={{ background: 'linear-gradient(135deg, rgba(15,23,42,0.9), rgba(30,27,75,0.95))', border: '1px solid rgba(99,102,241,0.3)' }}>
@@ -336,7 +385,7 @@ export default function App() {
           </div>
         )}
 
-        {/* TAB 8: AGENDA & CHECKLIST LUNES 14 */}
+        {/* SECONDARY: AGENDA LUNES 14 */}
         {activeTab === 'agenda' && (
           <div>
             <div className="glass-card" style={{ background: 'linear-gradient(135deg, rgba(30,27,75,0.9), rgba(15,23,42,0.95))', border: '1px solid rgba(245,158,11,0.3)' }}>
